@@ -24,11 +24,24 @@ class Centroid:
 
 def main():
 	k = 2
-	iterations = 6
+	iterations = 20
+	nDataPoints = 150
+
+	lowestX = 0
+	lowestY = 0
+	highestX = 100
+	highestY = 100
 
 	dataPoints, lowestX, lowestY, highestX, highestY = readData('kmeans')
+	# dataPoints = generateData(nDataPoints, lowestX, lowestY, highestX, highestY)
 	print(f"Datapoints = {dataPoints}")
 	kMeans(k, iterations, lowestX, lowestY, highestX, highestY, dataPoints)
+
+def generateData(iterations, lowestX, lowestY, highestX, highestY):
+	dataPoints = []
+	for i in range(0, iterations):
+		dataPoints.append((randint(lowestX, highestX), randint(lowestY, highestY)))
+	return dataPoints
 
 def readData(filename):
 	results = pd.read_excel(filename + '.xlsx')
@@ -63,7 +76,8 @@ def kMeans(k, iterations, lowestX, lowestY, highestX, highestY, dataPoints):
 		for centroid in centroids:
 			print(f"Centroid {centroid.coordinate} has followers {centroid.followers}")
 		
-		scatterPlot(dataPoints, centroids)
+		if i == (iterations - 1):
+			scatterPlot(dataPoints, centroids)
 		averageDistance(centroids)
 		
 def scatterPlot(dataPoints, centroids):
